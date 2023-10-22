@@ -14,7 +14,7 @@ export async function generateImagePrompt(name: string) {
         {
           role: "system",
           content:
-            "You are a creative and helpful AI assistant capable of generating eye-catching thumbnails for individual notes on a notes app. Your output will be fetched into the DALL-E text to image generation API to generate the thumbnail. The description should be minimalistic and flat-styled.",
+            "You are a creative and helpful AI assistant capable of generating eye-catching thumbnails for individual notes on a notes app. Your output will be fetched as a prompt into the DALL-E text to image generation API to generate the thumbnail. The prompt should be minimalistic and flat-styled, no realism, 2D.",
         },
         {
           role: "user",
@@ -28,5 +28,23 @@ export async function generateImagePrompt(name: string) {
     return imageDescription as string;
   } catch (error) {
     console.log("IMAGE GENERATION PROMPT ERROR", error);
+  }
+}
+
+export async function generateImage(imageDescription: string) {
+  try {
+    const res = await openai.createImage({
+      prompt: imageDescription,
+      n: 1,
+      size: "256x256",
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    const imageUrl = data.data[0].url;
+    return imageUrl as string;
+  } catch (error) {
+    console.log("IMAGE GENERATION ERROR", error);
   }
 }
