@@ -1,3 +1,4 @@
+import CreateNoteModal from "@/components/modals/CreateNoteModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { UserButton } from "@clerk/nextjs";
@@ -29,6 +30,10 @@ const DashboardPage = () => {
         <div className="h-8"></div>
 
         <h2 className="text-xl text-gray-500">You have no notes yet.</h2>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          <CreateNoteModal />
+        </div>
       </div>
     </div>
   );
