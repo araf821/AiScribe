@@ -10,15 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface CreateNoteModalProps {}
 
 const CreateNoteModal: FC<CreateNoteModalProps> = ({}) => {
+  const router = useRouter();
   const [input, setInput] = useState("");
 
   const createNote = useMutation({
@@ -37,11 +39,13 @@ const CreateNoteModal: FC<CreateNoteModalProps> = ({}) => {
     }
 
     createNote.mutate(undefined, {
-      onSuccess: () => {
+      onSuccess: ({ noteId }) => {
         console.log("sucess૟");
+        router.push(`/notes/${noteId}`);
       },
-      onError: () => {
-        console.log("Erriru");
+      onError: (error) => {
+        console.log("Erriru", error);
+        alert("Failed to create a note.");
       },
     });
   };
@@ -73,7 +77,13 @@ const CreateNoteModal: FC<CreateNoteModalProps> = ({}) => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button className="bg-green-600 hover:bg-emerald-700">
+            <Button
+              disabled={createNote.isPending}
+              className="bg-green-600 hover:bg-emerald-700"
+            >
+              {createNote.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Create
             </Button>
           </div>
