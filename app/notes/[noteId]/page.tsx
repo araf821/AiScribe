@@ -50,7 +50,7 @@ const NotePage = async ({ params }: { params: { noteId: string } }) => {
 
         <div className="h-4"></div>
         <div className="w-full rounded-lg border border-stone-200 px-16 py-8 shadow-xl">
-          <Editor />
+          <Editor note={currentNote} />
         </div>
       </div>
     </div>
