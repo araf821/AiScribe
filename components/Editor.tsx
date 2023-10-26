@@ -1,10 +1,11 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 import EditorToolbar from "./EditorToolbar";
 import { Button } from "./ui/button";
+import useDebounce from "@/hooks/useDebounce";
 
 interface EditorProps {}
 
@@ -19,6 +20,13 @@ const Editor: FC<EditorProps> = ({}) => {
       setEditorState(editor.getHTML());
     },
   });
+
+  const debouncedEditorState = useDebounce(editorState, 3000);
+
+  useEffect(() => {
+    // Save current content to database
+
+  }, [debouncedEditorState]);
 
   return (
     <>
