@@ -1,3 +1,4 @@
+import Editor from "@/components/Editor";
 import { Button } from "@/components/ui/button";
 import { clerk } from "@/lib/clerk-server";
 import { db } from "@/lib/db";
@@ -49,7 +50,7 @@ const NotePage = async ({ params }: { params: { noteId: string } }) => {
 
         <div className="h-4"></div>
         <div className="w-full rounded-lg border border-stone-200 px-16 py-8 shadow-xl">
-          {/* Editor */}
+          <Editor />
         </div>
       </div>
     </div>
