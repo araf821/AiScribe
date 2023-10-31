@@ -8,8 +8,6 @@ import {
   Heading2,
   Heading3,
   Heading4,
-  Heading5,
-  Heading6,
   Italic,
   List,
   ListOrdered,
@@ -78,18 +76,6 @@ const EditorToolbar: FC<EditorToolbarProps> = ({ editor }) => {
         className={editor.isActive("heading", { level: 4 }) ? "is-active" : ""}
       >
         <Heading4 className="h-6 w-6" />
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive("heading", { level: 5 }) ? "is-active" : ""}
-      >
-        <Heading5 className="h-6 w-6" />
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive("heading", { level: 6 }) ? "is-active" : ""}
-      >
-        <Heading6 className="h-6 w-6" />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
