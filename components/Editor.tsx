@@ -63,9 +63,10 @@ const Editor: FC<EditorProps> = ({ note }) => {
 
   useEffect(() => {
     if (!completion || !editor) return;
-    console.log(completion);
 
-    const diff = completion.slice(lastCompletion.current.length > 0 ? lastCompletion.current.length : 0);
+    const diff = completion.slice(
+      lastCompletion.current.length > 0 ? lastCompletion.current.length : 0,
+    );
     lastCompletion.current = completion;
     editor.commands.insertContent(diff.replace("...", ""));
   }, [completion, editor]);
@@ -84,7 +85,6 @@ const Editor: FC<EditorProps> = ({ note }) => {
         toast.error("Post could not be saved");
       },
     });
-    // Save current content to database
   }, [debouncedEditorState]);
 
   return (
@@ -95,9 +95,18 @@ const Editor: FC<EditorProps> = ({ note }) => {
           {saveNote.isPending ? "Saving..." : "Saved"}
         </Button>
       </div>
-      <div className="prose">
+      <div className="prose prose-sm mt-4 w-full">
         <EditorContent editor={editor} />
       </div>
+
+      <div className="h-4"></div>
+      <span className="text-sm">
+        Tip: Press{" "}
+        <kbd className="rounded-lg border-gray-200 bg-gray-200 px-2 py-1.5 text-xs font-semibold text-gray-800">
+          Shift + A
+        </kbd>{" "}
+        for AI autocomplete.
+      </span>
     </>
   );
 };
