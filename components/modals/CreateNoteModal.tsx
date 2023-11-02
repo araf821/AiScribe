@@ -16,12 +16,20 @@ import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface CreateNoteModalProps {}
 
 const CreateNoteModal: FC<CreateNoteModalProps> = ({}) => {
   const router = useRouter();
   const [input, setInput] = useState("");
+
+  const uploadToFirebase = useMutation({
+    mutationFn: async (noteId: string) => {
+      const response = await axios.post("/api/uploadToFirebase", { noteId });
+      return response.data;
+    },
+  });
 
   const createNote = useMutation({
     mutationFn: async () => {
@@ -40,11 +48,13 @@ const CreateNoteModal: FC<CreateNoteModalProps> = ({}) => {
 
     createNote.mutate(undefined, {
       onSuccess: ({ noteId }) => {
-        console.log("sucess૟");
+        toast.success("Successfully created new note!");
+
+        uploadToFirebase.mutate(noteId);
         router.push(`/notes/${noteId}`);
       },
       onError: (error) => {
-        console.log("Erriru", error);
+        console.log("Error", error);
         alert("Failed to create a note.");
       },
     });

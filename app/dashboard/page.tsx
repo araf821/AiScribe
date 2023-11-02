@@ -1,11 +1,21 @@
 import CreateNoteModal from "@/components/modals/CreateNoteModal";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { UserButton } from "@clerk/nextjs";
+import { db } from "@/lib/db";
+import { $notes } from "@/lib/db/schema";
+import { UserButton, auth } from "@clerk/nextjs";
+import { eq } from "drizzle-orm";
 import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+  const { userId } = auth();
+  const notes = await db
+    .select()
+    .from($notes)
+    .where(eq($notes.userId, userId!));
+
   return (
     <div className="grainy min-h-screen">
       <div className="mx-auto max-w-7xl p-10">
@@ -29,10 +39,35 @@ const DashboardPage = () => {
         <Separator />
         <div className="h-8"></div>
 
-        <h2 className="text-xl text-gray-500">You have no notes yet.</h2>
+        {notes.length === 0 && (
+          <div className="text-center">
+            <h2 className="text-xl text-gray-500">You have no notes yet.</h2>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-5">
           <CreateNoteModal />
+          {notes.map((note) => (
+            <a key={note.id} href={`/notes/${note.id}`}>
+              <div className="flex flex-col overflow-hidden rounded-md border-stone-200 hover:-translate-y-1 hover:shadow-xl">
+                <Image
+                  src={note.imageUrl || ""}
+                  width={400}
+                  height={200}
+                  alt={note.name || "Note Name"}
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {note.name}
+                  </h3>
+
+                  <p className="text-sm text-gray-500">
+                    {new Date(note.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </div>
