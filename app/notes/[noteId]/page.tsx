@@ -1,3 +1,4 @@
+import DeleteButton from "@/components/DeleteButton";
 import Editor from "@/components/Editor";
 import { Button } from "@/components/ui/button";
 import { clerk } from "@/lib/clerk-server";
@@ -45,7 +46,9 @@ const NotePage = async ({ params }: { params: { noteId: string } }) => {
           <span className="font-semibold text-stone-500">
             {currentNote.name}
           </span>
-          <div className="ml-auto">Delete</div>
+          <div className="ml-auto">
+            <DeleteButton noteId={parseInt(noteId)} />
+          </div>
         </div>
 
         <div className="h-4"></div>
